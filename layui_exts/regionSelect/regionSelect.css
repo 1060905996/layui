@@ -1,0 +1,15 @@
+
+/**
+ @ Name：layui.regionSelect 中国省市区选择器
+         注意：本文件只是一个扩展组件的示例，暂时没有写相关功能
+ @ Author：贤心
+ @ License：MIT 
+ */
+ 
+ 
+/* 样式加载完毕的标识 */
+html #layuicss-regionSelect{display: none; position: absolute; width: 1989px;} 
+ 
+ 
+/* 组件样式 */ 
+.layui-regionSelect{}
