@@ -1,0 +1,45 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>中国省市区选择器 - layui 第三方扩展组件示例</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../../layui/css/layui.css" media="all">
+</head>
+<body>
+
+<div style="padding: 50px;">
+  <div id="test"></div>
+</div>
+
+<div style="padding: 0 50px;">
+  <blockquote class="layui-elem-quote layui-quote-nm" style="color: #999;">
+    如果无法正常运行，请修改 layui.css、layui.js 及 layui.config() 方法参数中的 base 等相关路径。
+  </blockquote>
+</div>
+
+<script src="../../../layui/layui.js"></script>
+<script>
+layui.config({
+  base: '../../../layui_exts/' //配置 layui 第三方扩展组件存放的基础目录
+}).extend({
+  regionSelect: 'regionSelect/regionSelect'
+}).use(['regionSelect'], function(){
+  var regionSelect = layui.regionSelect;
+  
+  //执行示例
+  regionSelect.render({
+    elem: '#test'
+    ,layout: ['province', 'city', 'county'] //自定义联动层级：省、市、区，默认为：省、市、区、街道
+  });
+  
+});
+</script>
+</body>
+</html>
+
+
