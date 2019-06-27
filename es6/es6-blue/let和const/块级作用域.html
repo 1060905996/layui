@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<button type="button">1</button>
+		<button type="button">2</button>
+		<button type="button">3</button>
+		<script type="text/javascript">
+			window.onload =function(){
+				var btns = document.getElementsByTagName("button");
+				/* 使用var 声明i变量时,每次弹出都是3 */
+				for(let i=0;i<btns.length;i++){
+					btns[i].onclick = function(){
+						alert(i)
+					}
+				}
+			}
+		</script>
+	</body>
+</html>

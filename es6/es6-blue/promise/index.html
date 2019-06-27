@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<p id="table">1233</p>
+		<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.3.min.js"></script>
+		<script type="text/javascript">
+			let  p = new Promise(function(resolve,reject){
+				$.ajax({
+					url:"txt.json",
+					dataType:"json",
+					success:function(res){
+						resolve(res);
+						console.log(res);
+					},
+					error:function(res){
+						reject(res);
+						console.log(res);
+					}
+				})
+			});
+			let  p1 = new Promise(function(resolve,reject){
+				$.ajax({
+					url:"txt1.json",
+					dataType:"json",
+					success:function(res){
+						resolve(res);
+					},
+					error:function(res){
+						reject(res);
+					}
+				})
+			});
+			Promise.all([p,p1]).then(function(arr){
+				alert('全部成功');
+				let [res1,res2] = arr;
+				$("#table").text(JSON.stringify());
+			},function(arr){
+				alert("至少有一个失败")
+				console.log(arr);
+			})
+		</script>
+	</body>
+</html>

@@ -50,7 +50,7 @@
 			"layui.all": "../layui.all",
 			
 			/* 自定义插件 */
-			vminput:"plugs/vminput",
+			vminput:"plugs/vminput1",
 		};
 	n.prototype.cache = o, n.prototype.define = function(e, t) {
 		var n = this,

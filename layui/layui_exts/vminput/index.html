@@ -1,32 +1,47 @@
 <html>
-
 	<head>
+		<meta charset="utf-8">
 		<title>vminpu 插件</title>
 	</head>
 	<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css"/>
 	<body>
+		<form class="layui-form" style="width:80%;margin-top:50px">
 			<div class="layui-row">
 				<div class="layui-col-xs4 layui-col-lg4">
 					<div class="layui-form-item">
-						<input class="layui-input" id="123" class="vminput" />
+						<input class="layui-input" name="input" id="input1s" vm-data="1|2|3|d" vm-input="input1" />
 					</div>
 				</div>
 				
 				<div class="layui-col-xs4 layui-col-lg4">
 					<div class="layui-form-item">
-						<input class="layui-input" vm-input="card" id="1234" />
+						<input class="layui-input" vm-input="card" vm-max="2" id="input2" />
 					</div>
 				</div>
+				<button type="button" onclick="click1()">eqweq</button>
 			</div>	
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" lay-submit="" lay-filter="addAd" id="addAd">立即提交</button>
+					<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				</div>
+			</div>
+		</form>
 				<script src="../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 				
 				<script>
 					// 基于准备好的dom，初始化echarts实例
 					layui.use(['layer', 'form','vminput'], function() {
-						var layer = layui.layer,
-							vminput=layui.vminput;
-							vminput.render({"id":"123"});
-
+						var layer = layui.layer,form = layui.form,
+							vminput=layui.vminput;											
+						window.click1 = function(){
+							console.log(vminput.getValue("input1"));
+							vminput.setValue("input1",[1,2,3])
+						}
+						form.on("submit(addAd)",function(data){
+							console.log(data);
+							return false;
+						})
 					});
 				</script>
 	</body>

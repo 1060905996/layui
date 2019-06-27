@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			let arr = [1,2,3,4];
+			/* tmp 上一次迭代值 item 本次迭代的元素 index 数组下标从1开始 */
+			let result=arr.reduce((tmp,item,index)=>{
+				alert(index)
+				return tmp+item;
+			});
+			alert(result);
+		</script>
+	</body>
+</html>

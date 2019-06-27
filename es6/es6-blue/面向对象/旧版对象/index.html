@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/* 存在问题 ：
+				1. 类和构造函数一样
+				2. 方法使用prototype添加,代码混乱
+			 */
+			function User(name,pwd){
+				this.name = name;
+				this.pwd = pwd;
+			}
+			User.prototype.show=function(){
+				alert(this.name);
+				alert(this.pwd)
+			}
+			var  u =new User("lzc","lzc");
+			u.show();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/* args 剩余参数 */
+			/*rest parameter must be last formal parameter   */
+		 	function show(a,b,...args){
+				alert(a);
+				alert(b);
+				alert(args);
+			}
+			show(1,2,33,5,6,5) 
+			/* let arr = [1,2,3]
+			//...arr 等价于 1,2,3
+			show(...arr);
+			function show(a,b,c){
+				alert(a+b+c)
+			}
+			
+			let arr1 = [1,2,3];
+			let arr2 = [4,5,6];
+			alert(arr=[...arr1,...arr2]) */
+			
+			/* 默认参数 */
+			/* function show(a,b=12,c=5){
+				alert(a+b+c);
+			} */
+			show(7);
+		</script>
+	</body>
+</html>

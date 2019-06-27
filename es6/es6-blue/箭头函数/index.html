@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			
+			window.onload =function(){
+				alert(123)
+			} 
+			window.onload=()=>{
+				alert(456)
+			}
+			/* 去掉 function,在()后添加箭头 */
+		/* 	function show(){
+				alert(123)
+			} */
+			let show=()=>{
+				alert(456)
+			}
+			show();
+			let add =(a,b)=>{
+				alert(a+b);
+			}
+			add(12,6);
+			let arr = [5,9,2,3,74];
+			/* arr.sort((a,b)=>{
+				return a-b;
+			}) */
+			arr.sort((a,b)=>a-b)
+			alert(arr)
+			/* 如果一个参数,可以省略() */
+			let hide= a =>{
+				return a*2;
+			}
+			alert(hide(12))
+			/* 如果只有return，可以省略大括号 和return*/
+			let hide1= b =>b*3;
+
+			alert(hide1(5))
+		</script>
+	</body>
+</html>

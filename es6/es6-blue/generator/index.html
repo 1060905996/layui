@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			function *show(){
+				alert(1);
+				yield; // 暂时放弃执行
+				alert(2);
+			}
+			// 本质将函数查分成小的函数,每次next分别调用
+			let generator = show();
+			generator.next(); // 1 
+			generator.next(); // 2
+		</script>
+	</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div>
+			<table id="table">
+				<tr><th>商品</th><th>价格</th></tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<script type="text/javascript">
+			window.onload=function(){
+				let goods = [{name:"男士衬衫",price:89},
+						{name:"女士袜子",price:1000},
+						{name:"女士包包",price:5000},
+						{name:"男士包包",price:20}];
+				let array = [];
+				goods.forEach(it=>{
+								array.push(`<tr>
+									<td>${it.name}</td>
+									<td>${it.price}</td>
+								</tr>`);
+				});
+				document.getElementById("table").innerHTML= array.join('');
+			}
+		</script>
+	</body>
+</html>
