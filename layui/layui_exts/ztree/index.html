@@ -50,7 +50,7 @@
 				];
 				var tree = ztree.render("treeDemo",setting,zNodes);
 				var nodes = tree.getNodes();
-				/*tree.removeNode(nodes[0])*/
+				tree.removeNode(nodes[0]);
 
 				form.on("submit(addAd)", function(data) {
 					console.log(data);

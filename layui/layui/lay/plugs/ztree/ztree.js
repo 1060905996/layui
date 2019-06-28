@@ -165,23 +165,8 @@ arguments):!0)}})(jQuery);
 	
 let mod={
 	render:function(id,setting,zNodes){	   
-	    let ztree = new Tree(id,setting,zNodes);
+	    let ztree = $.fn.zTree.init($("#"+id), setting, zNodes);//new Tree(id,setting,zNodes);
 	    return ztree;    
-	}
-}
-	
-class Tree{
-	constructor(id,setting, zNodes){
-		this.zTreeObj = $.fn.zTree.init($("#"+id), setting, zNodes);
-	}
-	getTreeObj(){
-		return this.zTreeObj;
-	}
-	getNodes(){
-		return this.zTreeObj.getNodes();
-	}
-	removeNode(node,callbackFlag ){
-		this.zTreeObj.removeNode(node,callbackFlag);
 	}
 }
 	layui.link("http://127.0.0.1:8020/layui/layui/layui/lay/plugs/ztree/zTreeStyle/zTreeStyle123.css");
