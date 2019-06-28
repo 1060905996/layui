@@ -9,10 +9,9 @@
 			<div class="layui-row">
 				<div class="layui-col-xs4 layui-col-lg4">
 					<div class="layui-form-item">
-						<input class="layui-input vm-input" name="input1" id="input1"/>
+						<input class="layui-input vm-input" vm-data="1|2|3" name="input1" id="input1"/>
 					</div>
-				</div>
-				
+				</div>				
 				<div class="layui-col-xs4 layui-col-lg4">
 					<div class="layui-form-item">
 						<input class="layui-input vm-input" name="input2" placeholder="nihao"  vm-max="2" id="input2" />
@@ -36,7 +35,7 @@
 							vminput=layui.vminput;											
 						window.click1 = function(){
 							console.log(vminput.getValue("input1"));
-							vminput.setValue("input1",[1,2,3])
+							vminput.setValue("input1",'1|2|3')
 						}
 						form.on("submit(addAd)",function(data){
 							console.log(data);
