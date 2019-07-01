@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script  src="go.js" ></script >
+	</head>
+	<body>
+		
+		<div id="myDiagramDiv" style="width:1000px; height:800px; background-color: #DAE4E4;"></div>
+	 
+	 <script type="text/javascript">
+	 var $ = go.GraphObject.make;
+
+var myDiagram =
+  $(go.Diagram, "myDiagramDiv",
+    {
+      initialContentAlignment: go.Spot.Center, // 居中显示内容
+      "undoManager.isEnabled": true, // 打开 Ctrl-Z 和 Ctrl-Y 撤销重做功能
+     layout: $(go.TreeLayout, // 1个特殊的树形排列 Diagram.layout布局
+                { angle: 90, layerSpacing: 35 }) 
+    });
+
+// 我们早先定义的模板
+myDiagram.nodeTemplate =
+  $(go.Node, "Spot",
+    { background: "#44CCFF" },
+   
+    $(go.TextBlock, "Default Text",
+      { margin: 12, stroke: "red", font: "bold 16px sans-serif" },
+      new go.Binding("text", "name")),
+	$(go.Shape, "Circle", {
+		minSize: new go.Size(45, 45),
+		fill: "#f16643",
+		stroke: null
+	}),
+  );
+
+// 定义一个直角路由形式的连线模板, 去掉箭头
+myDiagram.linkTemplate =
+  $(go.Link,
+    { routing: go.Link.Orthogonal, corner: 5 },
+    $(go.Shape, { strokeWidth: 3, stroke: "#555" })); // the link shape
+
+var model = $(go.TreeModel);
+model.nodeDataArray =
+[
+  { key: "1",              name: "Don Meow"  },
+  { key: "2", parent: "1", name: "Demeter"},
+  { key: "3", parent: "1", name: "Copricat"   },
+  { key: "4", parent: "3", name: "Jellylorum" },
+  { key: "5", parent: "3", name: "Alonzo" },
+  { key: "6", parent: "2", name: "Munkustrap" }
+];
+myDiagram.model = model;
+	 </script>
+	</body>
+</html>

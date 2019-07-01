@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>iview example</title>
+		<link rel="stylesheet" type="text/css" href="source/iview/styles/iview.css">
+		<script type="text/javascript" src="source/vue.min.js"></script>
+		<script type="text/javascript" src="source/iview/iview.min.js"></script>
+		<script type="text/javascript" src="source/iview/go.js"></script>
+	</head>
+	<style>
+		html {
+			height: 100%;
+		}
+		
+		body {
+			margin: 0;
+			height: 100%
+		}
+		
+		.demo-split-pane{
+	        padding: 10px;
+	    }
+	    .demo-split{
+	        height: 200px;
+	        border: 1px solid #dcdee2;
+	    }
+	</style>
+
+	<body>
+		<div id="app"  style="background:#eee;padding:10px">
+			<Card :bordered="false" style="height: 880px;">
+	        	<p slot="title">智脑流程设计器</p>
+				<div style="height: 800px;border: 1px solid #dcdee2;">
+		            <Split v-model="split" >
+			            <div slot="right"  style="padding: 10px;padding-left: 10px;">
+			                <div class="main-container">
+								<div id="sample">
+									<div style="width: 100%; ">
+										<div id="myDiagramDiv" style="width: 100%; height: 780px;border: 1px solid #e9eaec"></div>
+									</div>
+								</div>
+							</div>
+			            </div>
+			            <div slot="left" style="padding: 5px;text-align: left;">
+			                <Collapse v-model="collapseindex" accordion>
+			                	<Panel name="1" hide-arrow="false"><Icon type="logo-buffer" ></Icon> <span>画板组件</span>
+			                		<div slot="content" style="overflow:auto;height: 340px;margin:-16px">
+					          			<Row>
+						          			<i-col span="24">
+						          				<div id="myPaletteDiv" style="width: 100%; height:340px;border: 1px solid #e9eaec"></div>
+						          			</i-col>
+						          		</Row>
+						          	</div>
+						        </Panel>
+						       						      
+						         <Panel name="7" hide-arrow="false"><Icon type="md-construct" ></Icon> <span>实体节点</span>
+						        	<div slot="content" style="overflow:auto;height: 300px;margin:-16px">
+						          		<Row style="margin-right:20px;margin-top: 16px;">
+						          			<i-col span="24">
+						          				<i-form  ref="entityForm" :model="entityForm"  :label-width="80">
+													<form-item label="节点名称">
+								                    	<i-input type="text" v-model="entityForm.nodeName"  placeholder="节点名称" @keyup.native="testclick('entityForm')" icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="节点编号">
+								                    	<i-input type="text" v-model="entityForm.nodeId"  placeholder="节点编号" @keyup.native="testclick('entityForm')"  icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="实体概念">
+								                    	<i-input type="text" v-model="entityForm.concepts"  placeholder="实体概念" @keyup.native="testclick('entityForm')"  icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="实体关键词">
+								                    	<i-input type="text" v-model="entityForm.regex"  placeholder="实体关键词"  @keyup.native="testclick('entityForm')" icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="默认跳转业务">
+								                    	<i-input type="text" v-model="entityForm.default"  placeholder="默认跳转业务" @keyup.native="testclick('entityForm')"  icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                     <form-item label="建值">
+								                    	<i-input type="text" v-model="entityForm.key"  placeholder="建值"  @keyup.native="testclick('entityForm')" icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="坐标">
+								                    	<i-input type="text" v-model="entityForm.loc"  placeholder="坐标" @keyup.native="testclick('entityForm')"  icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+												</i-form>
+						          			</i-col>
+						          		</Row>
+						          	</div>
+						        </Panel>
+						        <Panel name="8" hide-arrow="false"><Icon type="md-construct" ></Icon> <span>内容节点</span>
+						        	<div slot="content" style="overflow:auto;height: 300px;margin:-16px">
+						          		<Row style="margin-right:20px;margin-top: 16px;">
+						          			<i-col span="24">
+						          				<i-form  ref="contentForm" :model="contentForm"  :label-width="80">
+													<form-item label="节点名称">
+								                    	<i-input type="text" v-model="contentForm.nodeName"  placeholder="节点名称" @keyup.native="testclick('contentForm')" icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="节点编号">
+								                    	<i-input type="text" v-model="contentForm.nodeId"  placeholder="节点编号" @keyup.native="testclick('contentForm')"  icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="实体描述">
+								                    	<i-input type="text" v-model="contentForm.nodeDesc"  placeholder="实体概念" @keyup.native="testclick('contentForm')"  icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="建值">
+								                    	<i-input type="text" v-model="contentForm.key"  placeholder="建值"  @keyup.native="testclick('contentForm')" icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="坐标">
+								                    	<i-input type="text" v-model="contentForm.loc"  placeholder="坐标" @keyup.native="testclick('contentForm')"  icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+												</i-form>
+						          			</i-col>
+						          		</Row>
+						          	</div>
+						        </Panel>
+						        <Panel name="9" hide-arrow="false"><Icon type="md-construct" ></Icon> <span>参数节点</span>
+						        	<div slot="content" style="overflow:auto;height: 300px;margin:-16px">
+						          		<Row style="margin-right:20px;margin-top: 16px;">
+						          			<i-col span="24">
+						          				<i-form  ref="paramForm" :model="paramForm"  :label-width="80">
+													<form-item label="节点名称">
+								                    	<i-input type="text" v-model="paramForm.nodeName"  placeholder="节点名称" @keyup.native="testclick('paramForm')" icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="节点编号">
+								                    	<i-input type="text" v-model="paramForm.nodeId"  placeholder="节点编号" @keyup.native="testclick('paramForm')"  icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="实体描述">
+								                    	<i-input type="text" v-model="paramForm.nodeDesc"  placeholder="实体概念" @keyup.native="testclick('paramForm')"  icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="建值">
+								                    	<i-input type="text" v-model="paramForm.key"  placeholder="建值"  @keyup.native="testclick('paramForm')" icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="坐标">
+								                    	<i-input type="text" v-model="paramForm.loc"  placeholder="坐标" @keyup.native="testclick('paramForm')"  icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                   
+												</i-form>
+						          			</i-col>
+						          		</Row>
+						          	</div>
+						        </Panel>
+						         <Panel name="10" hide-arrow="false"><Icon type="md-construct" ></Icon> <span>属性节点</span>
+						        	<div slot="content" style="overflow:auto;height: 300px;margin:-16px">
+						          		<Row style="margin-right:20px;margin-top: 16px;">
+						          			<i-col span="24">
+						          				<i-form  ref="propertyForm" :model="propertyForm"  :label-width="80">
+													<form-item label="节点名称">
+								                    	<i-input type="text" v-model="propertyForm.nodeName"  placeholder="节点名称" @keyup.native="testclick('propertyForm')" icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="节点编号">
+								                    	<i-input type="text" v-model="propertyForm.nodeId"  placeholder="节点编号" @keyup.native="testclick('propertyForm')"  icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="实体描述">
+								                    	<i-input type="text" v-model="propertyForm.nodeDesc"  placeholder="实体概念" @keyup.native="testclick('propertyForm')"  icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                   <form-item label="建值">
+								                    	<i-input type="text" v-model="propertyForm.key"  placeholder="建值"  @keyup.native="testclick('propertyForm')" icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="坐标">
+								                    	<i-input type="text" v-model="propertyForm.loc"  placeholder="坐标" @keyup.native="testclick('propertyForm')"  icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+												</i-form>
+						          			</i-col>
+						          		</Row>
+						          	</div>
+						        </Panel>
+						        <Panel name="5" hide-arrow="false"><Icon type="md-construct" ></Icon> <span>关系属性</span>
+						        	<div slot="content" style="overflow:auto;height: 245px;margin:-16px">
+						          		<Row style="margin-right:10px;margin-top: 16px;">
+						          			<i-col span="24">
+						          				<i-form  ref="lineForm" :model="lineForm"  :label-width="80">
+													<form-item label="连接名称">
+								                    	<i-input type="text" v-model="lineForm.nodeName" @keyup.native="testclick('lineForm')"   placeholder="节点名称" icon="ios-create-outline" style="width: 100%"></i-input>
+								                   </form-item>
+								                    <form-item label="开始KEY">
+								                    	<i-input type="text" v-model="lineForm.popty1" @keyup.native="testclick('lineForm')"  placeholder="开始KEY" icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="结束KEY">
+								                    	<i-input type="text" v-model="lineForm.popty2" @keyup.native="testclick('lineForm')"  placeholder="结束KEY" icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+								                    <form-item label="是否显示">
+								                    	<i-input type="text" v-model="lineForm.popty3" @keyup.native="testclick('lineForm')"  placeholder="是否显示" icon="ios-create-outline" style="width: 100%"></i-input>
+								                    </form-item>
+												</i-form>
+						          			</i-col>
+						          		</Row>
+						          	</div>
+						        </Panel>
+						        <Panel name="6" hide-arrow="false"><Icon type="logo-buffer" ></Icon> <span>画板说明</span>
+						        	<div slot="content" style="overflow:auto;height: 550px;margin:-16px">
+						          		<Row style="margin-right:10px;margin-top: 10px;margin-left:10px;">
+						          			<i-col span="24">
+						          				<i-form  ref="pageForm" :model="pageForm"  :label-width="80">
+						                    		<i-input type="textarea" :rows="24" v-model="pageForm.panelDesc"  placeholder="画板说明属性2" icon="ios-create-outline" style="width: 100%"></i-input>
+												</i-form>
+						          			</i-col>
+						          		</Row>
+						          	</div>
+						        </Panel>
+						    </Collapse>
+			            </div>
+			        </Split>
+		        </div>
+	       </Card>
+		</div>
+		<script>
+			new Vue({
+				el: '#app',
+				data: {
+					split:0.16,
+					collapseindex:'1',
+					myDiagram: null,
+					nodeType:'',
+					makeType:'',
+					lightText: '#515a6e',
+					SelectPort:{
+						
+					},
+					pageForm:{
+						panelDesc:''
+					},
+					lineForm:{
+						nodeName:"",
+						popty1:'',
+						popty2:"",
+						popty3:""
+					},
+					entityForm:{
+						nodeName:"",
+						nodeId:'',
+						concepts:"",
+						regex:"",
+						default:"",
+						key:'',
+						loc:""
+					},
+					contentForm:{
+						nodeName:"",
+						nodeId:'',
+						nodeDesc:""
+					},
+					paramForm:{
+						nodeName:"",
+						nodeId:'',
+						nodeDesc:""
+					},
+					propertyForm:{
+						nodeName:"",
+						nodeId:'',
+						nodeDesc:""
+					},
+					flowData: { "class": "go.GraphLinksModel","nodeDataArray": [ 
+									{"category":"entity", "text":"实体节点", "key":"node-2", "loc":"-14.8125 -300.4000015258789"},
+									{"category":"content", "text":"内容节点", "key":"node-3", "loc":"-232.8125 -182.4000015258789"},
+									{"category":"param", "text":"参数节点", "key":"node-4", "loc":"243.1875 -183.4000015258789"},
+									{"category":"Comment", "text":"文本说明", "key":"node-1", "loc":"-451.4250183105469 -362.4000015258789"}
+									 ],
+									  "linkDataArray": [ 
+									{"from":"node-2", "to":"node-3", "visible":true, "points":[-65.69036794263263,-300.4000015258789,-75.69036794263263,-300.4000015258789,-123.8125,-300.4000015258789,-123.8125,-182.4000015258789,-171.93463205736737,-182.4000015258789,-181.93463205736737,-182.4000015258789]},
+									{"from":"node-2", "to":"node-4", "visible":true, "points":[36.06536794263263,-300.4000015258789,46.06536794263263,-300.4000015258789,114.1875,-300.4000015258789,114.1875,-183.4000015258789,182.30963205736737,-183.4000015258789,192.30963205736737,-183.4000015258789]}
+									 ]}
+
+				},
+				created: function() {
+					
+				},
+				methods:{
+					testclick(vvv){
+						if(vvv=='lineForm'){
+							    this.SelectPort.data.text=this.lineForm.nodeName;
+        						this.SelectPort.data.from=this.lineForm.popty1;
+        						this.SelectPort.data.to=this.lineForm.popty2;
+        						this.SelectPort.data.visible=this.lineForm.popty3;
+						}else if(vvv=="entityForm"){
+								this.SelectPort.data.text=this.entityForm.nodeName;
+        						this.SelectPort.data.nodeId=this.entityForm.nodeId;
+        						this.SelectPort.data.concepts=this.entityForm.concepts;
+        						this.SelectPort.data.key=this.entityForm.key;
+        						this.SelectPort.data.loc=this.entityForm.loc;
+        						this.SelectPort.data.regex=this.entityForm.regex;
+        						this.SelectPort.data.default=this.entityForm.default;
+						}else if(vvv=='contentForm'){
+							this.SelectPort.data.text=this.contentForm.nodeName;
+    						this.SelectPort.data.nodeId=this.contentForm.nodeId;
+    						this.SelectPort.data.nodeDesc=this.contentForm.nodeDesc;
+    						this.SelectPort.data.key=this.contentForm.key;
+    						this.SelectPort.data.loc=this.contentForm.loc;
+						}else if(vvv=='paramForm'){
+							this.SelectPort.data.text=this.paramForm.nodeName;
+    						this.SelectPort.data.nodeId=this.paramForm.nodeId;
+    						this.SelectPort.data.nodeDesc=this.paramForm.nodeDesc;
+    						this.SelectPort.data.key=this.paramForm.key;
+    						this.SelectPort.data.loc=this.paramForm.loc;
+						}else if(vvv=='propertyForm'){
+							this.SelectPort.data.text=this.propertyForm.nodeName;
+    						this.SelectPort.data.nodeId=this.propertyForm.nodeId;
+    						this.SelectPort.data.nodeDesc=this.propertyForm.nodeDesc;
+    						this.SelectPort.data.key=this.propertyForm.key;
+        					this.SelectPort.data.loc=this.propertyForm.loc;
+						}
+					
+						this.myDiagram.model.updateTargetBindings(this.SelectPort.data);
+					},
+					viewInfo(){
+						this.formValidate.routerText = this.myDiagram.model.toJson();
+					},
+					showLinkLabel(e) {
+						let label = e.subject.findObject("LABEL");
+						if(label !== null) {
+							if(e.subject.fromNode.data.category=='Start'){
+								label.visible = false;
+							}else if(e.subject.fromNode.data.category=='End'){
+								label.visible = false;
+							}else{
+								label.visible = true;
+							}
+						}
+					},
+					nodeStyle() {
+						let _this = this;
+						return [
+							new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+							{
+								locationSpot: go.Spot.Center,
+								mouseEnter: function(e, obj) {
+									_this.showPorts(obj.part, true);
+								},
+								mouseLeave: function(e, obj) {
+									_this.showPorts(obj.part, false);
+								}
+							}
+						];
+					},
+					makePort(name, spot, output, input) {
+						return go.GraphObject.make(go.Shape, "Circle", {
+							fill: "transparent",
+							stroke: null, // this is changed to "white" in the showPorts function
+							desiredSize: new go.Size(8, 8),
+							alignment: spot,
+							alignmentFocus: spot, // align the port on the main Shape
+							portId: name, // declare this object to be a "port"
+							fromSpot: spot,
+							toSpot: spot, // declare where links may connect at this port
+							fromLinkable: output,
+							toLinkable: input, // declare whether the user may draw links to/from here
+							cursor: "pointer" // show a different cursor to indicate potential link point
+						});
+					},
+					showPorts(node, show) {
+						var diagram = node.diagram;
+						if(!diagram || diagram.isReadOnly || !diagram.allowLink) return;
+						node.ports.each(function(port) {
+							port.stroke = (show ? "white" : null);
+						});
+					},
+					loadRouter(routerText) {
+						this.myDiagram.model = go.Model.fromJson(routerText);
+					},
+					findHeadShot(key) {
+				      return "images/seting-icon.png"
+				    },
+					findHeadUser(key) {
+				      return "images/contact-icon.png"
+				    },
+					findHeadSelect(key) {
+				      return "images/lcd-icon.png"
+				    }
+				},
+				mounted:function(){
+					let $ = go.GraphObject.make;
+					let self = this;
+					self.myDiagram = $(go.Diagram, "myDiagramDiv", // must name or refer to the DIV HTML element
+						{
+							initialContentAlignment: go.Spot.Center,
+							allowDrop: true, // must be true to accept drops from the Palette
+							"LinkDrawn": this.showLinkLabel, // this DiagramEvent listener is defined below
+							"LinkRelinked": this.showLinkLabel,
+							scrollsPageOnFocus: false,
+							"undoManager.isEnabled": true // enable undo & redo
+						});
+					// when the document is modified, add a "*" to the title and enable the "Save" button
+					self.myDiagram.addDiagramListener("Modified", function(e) {
+						let button = document.getElementById("SaveButton");
+						if(button) button.disabled = !self.myDiagram.isModified;
+						let idx = document.title.indexOf("*");
+						if(self.myDiagram.isModified) {
+							if(idx < 0) document.title += "*";
+						} else {
+							if(idx >= 0) document.title = document.title.substr(0, idx);
+						}
+					});
+					
+					var nodeSelectionAdornmentTemplate = $(go.Adornment, "Auto", $(
+						go.Shape, {
+							fill : null,
+							stroke : "deepskyblue",
+							strokeWidth : 1.5,
+							strokeDashArray : [ 4, 2 ]
+						}), $(go.Placeholder));
+		
+					
+						
+					
+					
+					
+					
+					
+						
+					self.myDiagram.nodeTemplateMap.add("Comment",
+						$(go.Node, "Auto", this.nodeStyle(),
+							$(go.Shape, "File", {
+								fill: "#EFFAB4",
+								minSize: new go.Size(80, 40),
+								stroke: null
+							}),
+							$(go.TextBlock, {
+									minSize: new go.Size(36, 17),
+									wrap: go.TextBlock.WrapFit,
+									textAlign: "center",
+									editable: false,
+									font: "9pt Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif",
+									stroke: '#454545'
+								},
+								new go.Binding("text").makeTwoWay()),
+							// no ports, because no links are allowed to connect with a comment
+							
+							// three named ports, one on each side except the bottom, all input only:
+							this.makePort("T", go.Spot.Top, false, true),
+							this.makePort("L", go.Spot.Left, false, true),
+							this.makePort("R", go.Spot.Right, false, true)
+						));
+						
+						/**
+						 * 自定义节点
+						 * */
+						self.myDiagram.nodeTemplateMap.add("entity", // the default category
+						$(go.Node, "Spot", this.nodeStyle(),
+							// the main object is a Panel that surrounds a TextBlock with a rectangular Shape
+							$(go.Panel, "Auto",
+								$(go.Shape, "Ellipse", {
+									fill: "rgb(255, 216, 110)",
+									stroke: null,
+									minSize: new go.Size(70, 40),
+								},new go.Binding("figure", "figure")),
+								$(go.Panel, "Horizontal",
+									$(go.Panel, "Table",
+						            {
+						              maxSize: new go.Size(150, 999),
+						              margin: new go.Margin(0, 5, 0, 5),
+						              defaultAlignment: go.Spot.Left
+						            },$(go.RowColumnDefinition, { column: 1, width: 1 }),
+										$(go.TextBlock, {
+												font: "bold 10pt Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif",
+												row: 0,column: 0,
+												stroke: this.lightText,
+												textAlign: 'center',
+												margin: new go.Margin(2,5, 2,0),
+												minSize: new go.Size(36, 17),
+												wrap: go.TextBlock.WrapFit,
+												editable: false
+										},new go.Binding("text").makeTwoWay())
+									)
+								)
+							),
+							// four named ports, one on each side:
+							this.makePort("T", go.Spot.Top, true, true),
+							this.makePort("L", go.Spot.Left, true, true),
+							this.makePort("R", go.Spot.Right, true, true),
+							this.makePort("B", go.Spot.Bottom, true, true)
+						));	
+						self.myDiagram.nodeTemplateMap.add("content", // the default category
+						$(go.Node, "Spot", this.nodeStyle(),
+							// the main object is a Panel that surrounds a TextBlock with a rectangular Shape
+							$(go.Panel, "Auto",
+								$(go.Shape, "Ellipse", {
+									fill: "rgb(251, 149, 175)",
+									stroke: null,
+									minSize: new go.Size(70, 40),
+								},new go.Binding("figure", "figure")),
+								$(go.Panel, "Horizontal",
+									
+									$(go.Panel, "Table",
+						            {
+						              maxSize: new go.Size(150, 999),
+						              margin: new go.Margin(0, 5, 0, 5),
+						              defaultAlignment: go.Spot.Left
+						            },$(go.RowColumnDefinition, { column: 1, width: 1 }),
+										$(go.TextBlock, {
+												font: "bold 10pt Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif",
+												row: 0,column: 0,
+												stroke: this.lightText,
+												textAlign: 'center',
+												margin: new go.Margin(2,5, 2,0),
+												minSize: new go.Size(36, 17),
+												wrap: go.TextBlock.WrapFit,
+												editable: false
+										},new go.Binding("text").makeTwoWay())
+									)
+								)
+							),
+							// four named ports, one on each side:
+							this.makePort("T", go.Spot.Top, true, true),
+							this.makePort("L", go.Spot.Left, true, true),
+							this.makePort("R", go.Spot.Right, true, true),
+							this.makePort("B", go.Spot.Bottom, true, true)
+						));
+						
+						self.myDiagram.nodeTemplateMap.add("param", // the default category
+						$(go.Node, "Spot", this.nodeStyle(),
+							// the main object is a Panel that surrounds a TextBlock with a rectangular Shape
+							$(go.Panel, "Auto",
+								$(go.Shape, "Ellipse", {
+									fill: "rgb(222, 155, 249)",
+									stroke: null,
+									minSize: new go.Size(70, 40),
+								},new go.Binding("figure", "figure")),
+								$(go.Panel, "Horizontal",
+									
+									$(go.Panel, "Table",
+						            {
+						              maxSize: new go.Size(150, 999),
+						              margin: new go.Margin(0, 5, 0, 5),
+						              defaultAlignment: go.Spot.Left
+						            },$(go.RowColumnDefinition, { column: 1, width: 1 }),
+										$(go.TextBlock, {
+												font: "bold 10pt Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif",
+												row: 0,column: 0,
+												stroke: this.lightText,
+												textAlign: 'center',
+												margin: new go.Margin(2,5, 2,0),
+												minSize: new go.Size(36, 17),
+												wrap: go.TextBlock.WrapFit,
+												editable: false
+										},new go.Binding("text").makeTwoWay())
+									)
+								)
+							),
+							// four named ports, one on each side:
+							this.makePort("T", go.Spot.Top, true, true),
+							this.makePort("L", go.Spot.Left, true, true),
+							this.makePort("R", go.Spot.Right, true, true),
+							this.makePort("B", go.Spot.Bottom, true, true)
+						));
+						
+						self.myDiagram.nodeTemplateMap.add("property", // the default category
+						$(go.Node, "Spot", this.nodeStyle(),
+							// the main object is a Panel that surrounds a TextBlock with a rectangular Shape
+							$(go.Panel, "Auto",
+								$(go.Shape, "Ellipse", {
+									fill: "rgb(255, 117, 110)",
+									stroke: null,
+									minSize: new go.Size(70, 40),
+								},new go.Binding("figure", "figure")),
+								$(go.Panel, "Horizontal",
+									
+									$(go.Panel, "Table",
+						            {
+						              maxSize: new go.Size(150, 999),
+						              margin: new go.Margin(0, 5, 0, 5),
+						              defaultAlignment: go.Spot.Left
+						            },$(go.RowColumnDefinition, { column: 1, width: 1 }),
+										$(go.TextBlock, {
+												font: "bold 10pt Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif",
+												row: 0,column: 0,
+												stroke: this.lightText,
+												textAlign: 'center',
+												margin: new go.Margin(2,5, 2,0),
+												minSize: new go.Size(36, 17),
+												wrap: go.TextBlock.WrapFit,
+												editable: false
+										},new go.Binding("text").makeTwoWay())
+									)
+								)
+							),
+							// four named ports, one on each side:
+							this.makePort("T", go.Spot.Top, true, true),
+							this.makePort("L", go.Spot.Left, true, true),
+							this.makePort("R", go.Spot.Right, true, true),
+							this.makePort("B", go.Spot.Bottom, true, true)
+						));
+																		
+					self.myDiagram.addDiagramListener("ObjectSingleClicked", function(e) {
+							let part = e.subject.part;
+							self.SelectPort=part;
+        					//如果鼠标单机的不是连接线，则显示信息："Clicked on" +  鼠标点击的目标的key值      
+        					if ((part instanceof go.Link)){
+        						self.collapseindex=5;
+        						self.lineForm.nodeName=part.data.text;
+        						self.lineForm.popty1=part.data.from;
+        						self.lineForm.popty2=part.data.to;
+        						self.lineForm.popty3=part.data.visible;
+        					}else{	      
+					            if(part.data.category=="Node"){
+					            	self.collapseindex=2;
+					            	self.panelForm.nodeName=part.data.text;
+	        						self.panelForm.popty1=part.data.nodeId;
+	        						self.panelForm.popty2=part.data.nodeType;
+	        						self.panelForm.popty3=part.data.key;
+	        						self.panelForm.popty4=part.data.loc;
+					            }else if(part.data.category=="Make"){
+					            	self.collapseindex=4;
+					            	self.selectForm.nodeName=part.data.text;
+	        						self.selectForm.popty1=part.data.nodeId;
+	        						self.selectForm.popty2=part.data.nodeType;
+	        						self.selectForm.popty3=part.data.key;
+	        						self.selectForm.popty4=part.data.loc;
+					            }else if(part.data.category=="Case"){
+					            	self.collapseindex=3;
+					            	self.caseForm.nodeName=part.data.text;
+	        						self.caseForm.popty1=part.data.nodeId;
+	        						self.caseForm.popty2=part.data.nodeType;
+	        						self.caseForm.popty3=part.data.key;
+	        						self.caseForm.popty4=part.data.loc;
+					            } else if(part.data.category=="Comment"){
+					            	self.collapseindex=6;
+					            	self.pageForm.panelDesc=self.myDiagram.model.toJson();
+					            } else if(part.data.category=="entity"){
+					            	self.collapseindex=7;
+					            	self.entityForm.nodeName=part.data.text;
+	        						self.entityForm.nodeId=part.data.nodeId;
+	        						self.entityForm.regex=part.data.regex;
+	        						self.entityForm.key=part.data.key;
+	        						self.entityForm.loc=part.data.loc;
+					            }else if(part.data.category=="content"){
+					            	self.collapseindex=8;
+					            	self.contentForm.nodeName=part.data.text;
+	        						self.contentForm.nodeId=part.data.nodeId;
+	        						self.contentForm.nodeDesc=part.data.nodeDesc;
+	        						self.contentForm.key=part.data.key;
+	        						self.contentForm.loc=part.data.loc;
+					            }else if(part.data.category=="param"){
+					            	self.collapseindex=9;
+					            	self.paramForm.nodeName=part.data.text;
+	        						self.paramForm.nodeId=part.data.nodeId;
+	        						self.paramForm.nodeDesc=part.data.nodeDesc;
+	        						self.paramForm.key=part.data.key;
+	        						self.paramForm.loc=part.data.loc;
+					            }else if(part.data.category=="property"){
+					            	self.collapseindex=10;
+					            	self.propertyForm.nodeName=part.data.text;
+	        						self.propertyForm.nodeId=part.data.nodeId;
+	        						self.propertyForm.nodeDesc=part.data.nodeDesc;
+	        						self.propertyForm.key=part.data.key;
+	        						self.propertyForm.loc=part.data.loc;
+					            }
+				            }
+				    });
+				    
+				    
+				    
+				    self.myDiagram.addDiagramListener("ObjectContextClicked", function(e) {
+				    		alert(1);
+							let part = e.subject.part;
+							if ((part instanceof go.Link)){
+								self.testclick('lineForm');
+        					}else{	      
+					            if(part.data.category=="Node"){
+									self.testclick('panelForm');
+					            }else if(part.data.category=="Make"){
+									self.testclick('selectForm');
+					            }else if(part.data.category=="Case"){
+									self.testclick('caseForm');
+					            } 
+				            }
+  
+				    });
+				   
+				    
+					// replace the default Link template in the linkTemplateMap
+					self.myDiagram.linkTemplate =
+						$(go.Link, // the whole link panel
+							{
+								routing: go.Link.AvoidsNodes,
+								curve: go.Link.JumpOver,
+								corner: 5,
+								toShortLength: 4,
+								relinkableFrom: true,
+								relinkableTo: true,
+								reshapable: true,
+								resegmentable: true,
+								// mouse-overs subtly highlight links:
+								mouseEnter: function(e, link) {
+									link.findObject("HIGHLIGHT").stroke = "#808695";
+								},
+								mouseLeave: function(e, link) {
+									link.findObject("HIGHLIGHT").stroke = "#808695";
+								}
+							},new go.Binding("points").makeTwoWay(),
+							$(go.Shape, // the highlight shape, normally transparent
+								{
+									isPanelMain: true,
+									strokeWidth: 1.5,
+									stroke: "olive",
+									name: "HIGHLIGHT"
+								}),
+							$(go.Shape, // the link path shape
+								{
+									isPanelMain: true,
+									stroke: "olive",
+									strokeWidth: 1.5
+								}),
+							$(go.Shape, // the arrowhead
+								{
+									toArrow: "standard",
+									stroke: "olive",
+									strokeWidth: 1.5
+								}),
+							$(go.Panel, "Auto", // the link label, normally not visible
+								{
+									visible: false,
+									name: "LABEL",
+									segmentIndex: 2,
+									segmentFraction: 0.5
+								},new go.Binding("visible", "visible").makeTwoWay(),
+								$(go.Shape, "RoundedRectangle", // the label shape
+									{
+										fill: "#F8F8F8",
+										stroke: null,
+										strokeWidth: 1.5
+									}),
+								$(go.TextBlock, "desc", // the label
+									{
+										minSize: new go.Size(40, 17),
+										wrap: go.TextBlock.WrapFit,
+										textAlign: "center",
+										editable: false,
+										font: "11pt helvetica, arial, sans-serif"
+									},new go.Binding("text").makeTwoWay())
+							)
+						);
+		
+					// initialize the Palette that is on the left side of the page
+					let myPalette = $(go.Palette, "myPaletteDiv", // must name or refer to the DIV HTML element
+					{
+						scrollsPageOnFocus: false,
+						nodeTemplateMap: self.myDiagram.nodeTemplateMap, // share the templates used by myDiagram
+						model: new go.GraphLinksModel([ // specify the contents of the Palette
+							/*{category: "Start",text: "实体节点"},
+							{category: "Case",text: "  内  容  ",nodeId:"",nodeType:"",nodeText:""},
+							{category: "Node",text: "  属  性  ",nodeId:"",nodeType:"",nodeText:""},
+							{category: "Make",text: "  参  数  ",figure: "Diamond",nodeId:"",nodeType:"",nodeText:""},
+							{category: "End",text: "结束"},*/
+							{category: "Comment",text: "文本说明"},
+							{category: "entity",text: "实体节点"},
+							{category: "content",text: "内容节点"},
+							{category: "param",text: "参数节点"},
+							{category: "property",text: "属性节点"}
+						])
+					});	
+					self.myDiagram.model = go.Model.fromJson(self.flowData);
+				}
+				
+			})
+		</script>
+	</body>
+
+</html>

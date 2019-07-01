@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>学习别人教程</title>
+		<script  src="go.js" ></script >
+	</head>
+	<body>
+		<div id="app">
+			<div id="myDiagramDiv" style="width:1000px; height:500px; background-color: #DAE4E4;"></div>
+		</div>
+				
+		<script type="text/javascript">
+			 var $ = go.GraphObject.make;
+			var myDiagram =
+			  $(go.Diagram, "myDiagramDiv",
+			    {
+			      initialContentAlignment: go.Spot.Center, // 居中显示内容
+			      "undoManager.isEnabled": true, // 打开 Ctrl-Z 和 Ctrl-Y 撤销重做功能
+			      layout: $(go.ForceDirectedLayout, // 1个特殊的树形排列 Diagram.layout布局 TreeLayout CircularLayout ForceDirectedLayout
+			                {defaultSpringLength: 30, defaultElectricalCharge: 20}) //
+			    });
+				/* # */
+				myDiagram.nodeTemplateMap.add("entity",
+				 $(go.Node, "Auto",
+				  { isShadowed: true },
+				  // define the node's outer shape
+				  $(go.Shape, "Circle",
+					{ fill: "#47cb89", stroke: "#47cb89" ,minSize: new go.Size(25, 25),maxSize: new go.Size(50, 50),spot1: new go.Spot(0, 0, 5, 5), spot2: new go.Spot(1, 1, -5, -5)}),
+				  // define the node's text
+				  $(go.TextBlock,
+					{ font: "helvetica, arial, sans-serif", textAlign: "center",overflow:go.TextBlock.WrapBreakAll },
+					new go.Binding("text", "name"))
+				));
+				 
+				 myDiagram.nodeTemplateMap.add("context",
+				  $(go.Node, "Auto",
+					  { isShadowed: true },
+					  // define the node's outer shape
+					  $(go.Shape, "RoundedRectangle",
+						{ fill: "#F5F5F5", stroke: "#D8D8D8" }),
+					  // define the node's text
+					  $(go.TextBlock,
+						{ margin: 5, font: "bold 11px Helvetica, bold Arial, sans-serif" },
+						new go.Binding("text", "name"))
+				  	
+				  ));
+				  
+				   myDiagram.nodeTemplateMap.add("param",
+				   $(go.Node, "Auto",
+					  { isShadowed: true },
+					  // define the node's outer shape
+					  $(go.Shape, "Ellipse",
+						{
+							fill: "#2b85e4",
+							stroke: null,
+							minSize: new go.Size(50, 30),
+						}),
+					  // define the node's text
+					  $(go.TextBlock,
+						{ margin: 5, font: "bold 11px Helvetica, bold Arial, sans-serif" },
+						new go.Binding("text", "name"))
+				   	
+				   ));
+				  
+				   myDiagram.linkTemplate =
+					$(go.Link,  // the whole link panel
+					  { selectable: false },
+					  $(go.Shape));  // the link shape
+				 
+				var model = $(go.TreeModel);
+				model.nodeDataArray =
+				[
+				  { category: "entity",key: "1",              name: "公积金"  },
+				  { category: "entity",key: "2", parent: "1", name: "Demeter"},
+				  { category: "context",key: "3", parent: "1", name: "Copricat"   },
+				  { category: "entity",key: "4", parent: "3", name: "Jellylorum" },
+				  { category: "context",key: "5", parent: "3", name: "Alonzo" },
+				  { category: "context",key: "6", parent: "2", name: "Munkustrap" },
+				  { category: "context",key: "7", parent: "2", name: "Munkustrap" },
+				  { category: "entity",key: "8", parent: "2", name: "Munkustrap" },
+				  { category: "entity",key: "9", parent: "2", name: "Munkustrap" },
+				  { category: "param",key: "10", parent: "8", name: "Munkustrap" },
+				];
+				myDiagram.model = model;
+				var node = myDiagram.model.findNodeDataForKey("1");
+				model.setCategoryForNodeData(node,"param")
+				console.log();
+		</script>
+	</body>
+</html>

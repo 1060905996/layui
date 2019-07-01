@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>iview example</title>
+    <script type="text/javascript" src="source/vue.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="source/iview/styles/iview.css">
+    <script type="text/javascript" src="source/iview/iview.min.js"></script>
+</head>
+<style>
+html{height: 100%;}
+body{ margin:0; height:100%}
+.login{
+    width: 100%;
+    height: 100%;margin:0;
+    padding-top: 13%;
+    background-image: url('images/homebg.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+.signinpanel {
+	width: 100%;
+    color: rgba(255,255,255,.95);
+}
+
+.signinpanel .logopanel {
+    float: none;
+    width: auto;
+    padding: 0;
+    background: none;
+}
+
+.signinpanel .signin-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.signinpanel .form-control {
+    display: block;
+    margin-top: 15px;
+}
+
+.signinpanel form {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255,255,255,.3);
+    -moz-box-shadow: 0 3px 0 rgba(12, 12, 12, 0.03);
+    -webkit-box-shadow: 0 3px 0 rgba(12, 12, 12, 0.03);
+    box-shadow: 0 3px 0 rgba(12, 12, 12, 0.03);
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    padding: 30px;
+}
+
+.signup-footer{border-top: solid 1px rgba(255,255,255,.3);margin:20px 0;padding-top: 15px;}
+
+@media screen and (max-width: 768px) {
+    .signinpanel,
+    .signuppanel {
+        margin: 0 auto;
+        width: 420px!important;
+        padding: 20px;
+    }
+    .signinpanel form {
+        margin-top: 20px;
+    }
+    .signuppanel .form-control {
+        margin-bottom: 10px;
+    }
+    .signup-footer .pull-left,
+    .signup-footer .pull-right {
+        float: none !important;
+        text-align: center;
+    }
+    .signinpanel .signin-info ul {
+        display: none;
+    }
+}
+@media screen and (max-width: 320px) {
+    .signinpanel,
+    .signuppanel {
+        margin:0 20px;
+        width:auto;
+    }
+}
+
+</style>
+<body>
+<div id="app" class="login">
+    <Row justify="center">
+        <i-col :lg="8" :md="6">&nbsp;</i-col>
+        <i-col :lg="8" :md="12">
+	        <div class="signinpanel">
+		        <Row justify="center">
+		            <i-col span="24">
+		                <i-form  ref="loginForm" :model="loginForm" :rules="ruleValidate">
+		                    <h4 class="no-margins">登录：</h4>
+		                    <p class="m-t-md">登录到文思海辉智脑流程设计中心</p>
+		                    <br>
+		                    <form-item prop="name">
+		                    	<i-input type="text" v-model="loginForm.name"  placeholder="用户名" @keyup.enter.native="login('loginForm')" icon="ios-person" style="width: 100%"></i-input>
+		                    </form-item>
+		                    <form-item prop="pwd">
+		                    	<i-input type="password" v-model="loginForm.pwd"  placeholder="密码" @keyup.enter.native="login('loginForm')" icon="ios-key" style="width: 100%"></i-input>
+		                    </form-item>
+		                    <a href="">忘记密码了？</a>  
+		                    <br>
+		                    <i-button type="success" :loading="loading" @click="login('loginForm')"  style="width: 100%">
+						        <span v-if="!loading">登录</span>
+						        <span v-else>登录中...</span>
+						    </i-button>
+						    <br> <br>
+						    <p style="color:red;text-align: center;">{{message}}</p>
+		                    <div class="signup-footer">
+					            <div style="text-align: center;">
+					                &copy;   http://www.pactera.com    文思海辉
+					            </div>
+					        </div>
+		                </i-form>
+		            </i-col>
+		        </Row>  
+		    </div>
+        </i-col>
+        <i-col :lg="8" :md="6">&nbsp;</i-col>
+    </Row>  
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+        	loading:false,
+        	message:'',
+        	loginForm: {
+                name: '',
+                pwd: ''
+            },
+            ruleValidate: {
+                name: [
+                    { required: true, message: '登录名不能为空', trigger: 'blur' }
+                ],
+                pwd: [
+                    { required: true, message: '密码不能为空', trigger: 'blur' }
+                ]
+            }
+        },
+        methods: {
+            login:function(fromname) {
+            	this.$refs[fromname].validate((valid) => {
+                    if (valid) {
+                    	this.loading = true;
+                    	if(this.loginForm.name=='pactera'&&this.loginForm.pwd=='pactera123'){
+                    		document.location="designer.html";
+                    	}else{
+                    		this.message="密码错误，请向管理员申请"
+                    		this.loading = false;
+                    	}
+                    } else {
+                    	this.loading = false;
+                    }
+                })  
+            }
+        }
+    })
+  </script>
+</body>
+</html>

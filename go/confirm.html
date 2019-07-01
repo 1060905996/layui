@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>Document</title>
+ <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+</head>
+<body>
+ <div id="app">
+  <button id="btn" v-popup="{text: '这是一个自定义的弹窗'}">点击我弹窗哈哈哈</button>
+  <div id="d"></div>
+ </div>
+ <script>
+   Vue.directive('popup', {
+    inserted: function (el, binding) {
+     // console.log(binding.value.text)
+     var o = el;
+     var myDiv = document.createElement('div');
+     myDiv.style.width = '300px';
+     // myDiv.style.height = '130px';
+     myDiv.style.position = 'fixed';
+     myDiv.style.top = '50%';
+     myDiv.style.left = '50%';
+     myDiv.style.transform = 'translate(-50%, -100%)';
+     myDiv.style.zIndex = '100';
+     myDiv.style.backgroundColor = '#f3f5f8';
+     myDiv.style.display = 'none';
+     myDiv.style.textAlign = 'center';
+     myDiv.style.paddingTop = '15px'
+     myDiv.style.borderRadius = '5px';
+     myDiv.style.borderWidth = '1px';
+     myDiv.style.borderStyle = 'solid';
+     myDiv.style.borderColor = '#696969';
+     var myContent = document.createElement('p');
+     var myText = document.createTextNode(binding.value.text);
+     var btnWrapper = document.createElement('div')
+     btnWrapper.style.marginTop = '20px'
+     btnWrapper.style.marginBottom = '20px'
+     var myConfirm = document.createElement('input');
+     myConfirm.type = 'button';
+     myConfirm.value = '确定';
+     myConfirm.style.marginRight = '15px'
+     var myCancel = document.createElement('input');
+     myCancel.type = 'button';
+     myCancel.value = '取消';
+     btnWrapper.appendChild(myConfirm)
+     btnWrapper.appendChild(myCancel)
+     myDiv.appendChild(myContent.appendChild(myText))
+     myDiv.appendChild(btnWrapper)
+     document.body.appendChild(myDiv);
+     o.onclick = function (event) {
+      myDiv.style.display = 'block'
+     }
+     myConfirm.onclick = function (event) {
+      myDiv.style.display = 'none'
+     }
+     myCancel.onclick = function (event) {
+      myDiv.style.display = 'none'
+     }
+    }
+   })
+   var vm = new Vue({
+    el: '#app',
+    data:{
+    }
+   })
+ </script>
+</body>
+</html>
