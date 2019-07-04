@@ -12,10 +12,10 @@ layui.define(['jquery','layer'],function(exports){
 				console.error("id is null");
 				return ;
 			}
+			if(config == null || config == undefined){
+				config = {};
+			}
 			for(id of ids){
-				if(config == null || config == undefined){
-					config = {};
-				}
 				config.id = id;
 				let show = new Class(config);
 				let vt =new vminput(config);
@@ -67,17 +67,25 @@ layui.define(['jquery','layer'],function(exports){
 			that._input= document.getElementById(_config._inputId);
 			that._table = document.getElementById(_config._inputTableId);
 			that._button = document.getElementById(_config._inputButtonId);
+			// 新增按钮
 			$(that._button).on("click",{that:that},function(event){
 					let that =event.data["that"];
 					let input = that._input;
 					let tx = input.value;
 					that.appendTr(tx);
 			});
+			// 删除按钮
 			$(that._table).on("click","button",{that:that},function(){
 				let tr = this.parentNode.parentNode.parentNode;
 				that._table.removeChild(tr);
 				that.setValue(that);
 			});
+			// 文本框输入enter,自动新增
+			that._input.onkeyup = function(){
+				 if (event.keyCode == 13){
+				 	that._button.click();
+				 }
+			}
 			return  that;
 		}
 		// 给ele设置值
