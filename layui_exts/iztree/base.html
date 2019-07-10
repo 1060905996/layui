@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>iztree插件</title>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" type="text/css" href="../../lib/iconfont/iconfont.css" />
+	</head>
+
+	<body>
+		<style>
+			.detail-body {
+				margin: 20px 0 0;
+				color: #333;
+				word-wrap: break-word;
+			}
+			
+			.itreeContent {
+				display: none;
+				position: absolute;
+				width: 100%;
+			}
+			
+			.itree {
+				margin-top: 0;
+				width: 100%;
+				position: absolute;
+				z-index: 100;
+				background-color: white;
+				border: 1px solid #D8E2E9;
+			}
+			
+			.itree>i {
+				font-size: 20px;
+				color: #c2c2c2;
+				margin-left: 5px;
+			}
+			
+			.itree>i>span {
+				font-size: 15px;
+				margin-left: 3px;
+			}
+		</style>
+		<div class="layui-form-item">
+			<label class="layui-form-label">label</label>
+			<div class="layui-input-block">
+				<input id="show"  class="layui-input" placeholder="-" type="text" readonly/>
+				<div id="menuContent" class="itreeContent">
+					<div class="itree" id="treeDemo_div">
+						<i class="iconfont iconcheckbox-multiple-ma" id="treeDemo_checkAll">
+						<span id="treeDemo_checkAll_span">全选</span>
+					</i>
+						<i class="iconfont iconcheckbox-multiple-bl" id="treeDemo_uncheckAll">
+						<span id="treeDemo_uncheckAll_span">全不选</span>
+					</i>
+						<i class="layui-icon layui-icon-add-circle" id="treeDemo_add">
+						<span id="treeDemo_add_span">添加</span>
+					</i>
+
+						<i class="iconfont iconshouqi-copy" style="float: right;margin-right: 3px;" id="treeDemo_top">
+						<span id="treeDemo_top_span"></span>
+					</i>
+
+						<ul id="treeDemo" class="ztree">
+
+						</ul>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+		<script src="../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			layui.use(['itree', 'jquery'], function() {
+				let iztree = layui.itree,
+					$ = layui.jquery;
+				$(function() {
+					iztree.render();
+				})
+			});
+		</script>
+
+	</body>
+
+</html>

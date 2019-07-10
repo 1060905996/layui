@@ -170,7 +170,7 @@ layui.define(['jquery','layer'],function(exports){
 			}
 			let ele = document.getElementById(_inputId);
 			if(ele==undefined||ele==null){
-				console.error("id 不存在:"+_inputId);
+				console.error("不存在元素id="+_inputId);
 			}
 			config._inputId="_vminput_" + _inputId;
 			config._inputTableId = config._inputId+"_table";

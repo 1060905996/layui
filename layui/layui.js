@@ -52,6 +52,7 @@
 			/* 自定义插件 */
 			vminput:"plugs/vminput",
 			ztree:"plugs/ztree/ztree",
+			itree:'plugs/itree/itree',
 		};
 	n.prototype.cache = o, n.prototype.define = function(e, t) {
 		var n = this,
