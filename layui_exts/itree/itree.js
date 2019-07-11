@@ -7,21 +7,26 @@ layui.config({
 	let map = {},
 	itreeInput="_itree_input",
 	itreeDiv = "_itree_div",
-	checkAllbtn= "_itree_check_all_btn",
-	unckeckAllbtn="_itree_uncheck_all_btn",
-	addbtn="_itree_add_btn",ztreeId="_itree";
+	itreeContentDiv="_itree_content_div",
+	ztreeId="_itree";
+	let _config = {
+		id :"id",
+		setting:"ztree配置",
+		zNodes:"ztree 节点",
+		btns:"显示在头部的按钮,可以做功能扩展[{id,icon,text,title}]",
+	}
 	let mod = {
-		render:function(id,setting,zNodes){
-			   let iztree = new iZtree(id,setting,zNodes);
+		render:function(config){
+			   let iztree = new iZtree(config);
 		},
 	}
 	class iZtree{
-		constructor(id,setting,zNodes){
-			let that = this,c = new Class(id);
+		constructor(config){
+			let that = this,c = new Class(config);
 			that.elements = c.elements;
 			//初始化事件
 			that.init_events();
-			that.zTreeObj = ztree.render(that.elements[ztreeId], setting, zNodes);	
+			that.zTreeObj = ztree.render(that.elements[ztreeId], config.setting, config.zNodes);	
 		}
 		init_events(){
 			let that = this;
@@ -62,22 +67,24 @@ layui.config({
 		}
 		reSize(){
 			let that = this;
-			let width = document.getElementById("show").offsetWidth-3;
+			let width = document.getElementById(that.elements[itreeInput]).offsetWidth-3;
 			$("#"+that.elements[itreeDiv]).css({width: width});
 		}
 		onBodyDown(event,that){
-			console.log(event.target.id)
-			if(!(event.target.id.indexOf("treeDemo_")>-1)) {
+			let t = document.getElementById(that.elements[itreeDiv]);
+			console.log()
+			if(!t.contains(event.target)) {
 				that.hideMenu();
 			}
 		}
 	}
 	class Class{
-		constructor(id){
-			this.build_elements(id);
+		constructor(config){
+			this.build_elements(config);
 		}
 		
-		build_elements(id){
+		build_elements(config){
+			let id = config.id;
 			let that = this;
 			let ele = document.getElementById(id);
 			if(ele==null){
@@ -87,23 +94,35 @@ layui.config({
 			that.elements["id"] = id;
 			that.elements[itreeInput] = id+itreeInput;
 			that.elements[itreeDiv] = id+itreeDiv;
-			that.elements[checkAllbtn] = id+checkAllbtn;
-			that.elements[unckeckAllbtn] = id+unckeckAllbtn;
-			that.elements[addbtn] = id+addbtn;
+			that.elements[itreeContentDiv] = id+itreeContentDiv;
 			that.elements[ztreeId] = id+ztreeId;
-			let html = this.build_html(that.elements);
+			let html = this.build_html(that.elements,config);
 			ele.parentElement.innerHTML = html;
 		}
-		build_html(elements){
-			let _itreeInput=elements[itreeInput],
-				_itreeDiv = elements[itreeDiv],
-				_checkAllbtn= elements[checkAllbtn],
-				_unckeckAllbtn=elements[unckeckAllbtn],
-				_addbtn=elements[addbtn],_ztreeId=elements[ztreeId];
-			let html = `<input id="${_itreeInput}"  class="layui-input" placeholder="-" type="text" readonly/>
-				<div id="${_itreeDiv}" class="itreeContent">
-					<div class="itree">
-						<i class="iconfont iconcheckbox-multiple-ma" id="${_checkAllbtn}">
+		build_html(elements,config){
+			let btnHtml=this.build_btns(config.btns);
+			let html = `<input id="${elements[itreeInput]}"  class="layui-input" placeholder="-" type="text" readonly/>
+				<div id="${elements[itreeDiv]}" class="itreeContent">
+					<div class="itree" id="${elements[itreeContentDiv]}">
+						${btnHtml}
+						<ul id="${elements[ztreeId]}" class="ztree">
+						</ul>
+					</div>
+				</div>`;
+		 	return html;
+		}
+		
+		build_btns(btns){
+			if(btns==undefined || btns.length==0)return "";
+			let t = [];
+			for(let btn of btns){
+				t.push(`<i class="${btn.icon}" id="${btn.id}" title='${btn.title}'>
+								<span>${btn.text}</span>
+						</i>`);
+			}
+			return t.join('');
+		}
+		/*<i class="iconfont iconcheckbox-multiple-ma" id="${_checkAllbtn}">
 							<span id="${_checkAllbtn}">全选</span>
 						</i>
 							<i class="iconfont iconcheckbox-multiple-bl" id="${_unckeckAllbtn}">
@@ -114,13 +133,7 @@ layui.config({
 						</i>
 							<i class="iconfont iconshouqi-copy" style="float: right;margin-right: 3px;" id="treeDemo_top">
 							<span id="treeDemo_top_span"></span>
-						</i>
-						<ul id="${_ztreeId}" class="ztree">
-						</ul>
-					</div>
-				</div>`;
-		 	return html;
-		}
+						</i>*/
 	}
 	exports('itree', mod);
 });
