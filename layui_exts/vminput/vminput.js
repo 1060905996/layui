@@ -229,6 +229,6 @@ layui.define(['jquery','layer'],function(exports){
 		}
 	}
 	onload();
-	layui.link("http://127.0.0.1:8020/layui/layui/layui/lay/plugs/css.css");
+	layui.link("http://127.0.0.1:8020/layui/layui_exts/vminput/vminput.css");
 	exports('vminput', mod);
 });

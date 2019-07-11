@@ -3,7 +3,7 @@
 		<meta charset="utf-8">
 		<title>Ztree 插件</title>
 	</head>
-	<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css" />
+	<link rel="stylesheet" type="text/css" href="../../../layui/css/layui.css" />
 	<body>
 		<form class="layui-form" style="width:80%;margin-top:50px">
 			<div class="layui-row">
@@ -20,10 +20,13 @@
 				</div>
 			</div>
 		</form>
-		<script src="../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 		<script>
-			// 基于准备好的dom，初始化echarts实例
-			layui.use(['layer', 'form', 'ztree'], function() {
+			layui.config({
+				  base: '../../../layui_exts/' //配置 layui 第三方扩展组件存放的基础目录
+				}).extend({
+				  ztree: 'ztree/ztree' 
+				}).use(['layer', 'form', 'ztree'], function() {
 				var layer = layui.layer,
 					form = layui.form,
 					ztree = layui.ztree;

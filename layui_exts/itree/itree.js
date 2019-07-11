@@ -1,4 +1,8 @@
-layui.define(['ztree','jquery'],function(exports){
+layui.config({
+  base: '../../' //配置 layui 第三方扩展组件存放的基础目录
+}).extend({
+  ztree: 'ztree/ztree' 
+}).define(['ztree','jquery'],function(exports){
 	let ztree = layui.ztree,$ = layui.jquery;
 	let map = {},
 	itreeInput="_itree_input",
@@ -8,7 +12,6 @@ layui.define(['ztree','jquery'],function(exports){
 	addbtn="_itree_add_btn",ztreeId="_itree";
 	let mod = {
 		render:function(id,setting,zNodes){
-			
 			   let iztree = new iZtree(id,setting,zNodes);
 		},
 	}

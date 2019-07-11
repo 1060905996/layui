@@ -4,8 +4,8 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>iztree插件</title>
-		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css" />
-		<link rel="stylesheet" type="text/css" href="../../lib/iconfont/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../../layui/css/layui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../lib/iconfont/iconfont.css" />
 		<style>
 			.detail-body {
 				margin: 20px 0 0;
@@ -50,9 +50,13 @@
 
 		</div>
 
-		<script src="../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 		<script>
-			layui.use(['itree', 'jquery'], function() {
+			layui.config({
+			  base: '../../../layui_exts/' //配置 layui 第三方扩展组件存放的基础目录
+			}).extend({
+			  itree: 'itree/itree' 
+			}).use(['itree', 'jquery'], function() {
 				let iztree = layui.itree,
 					$ = layui.jquery;
 				$(function() {
