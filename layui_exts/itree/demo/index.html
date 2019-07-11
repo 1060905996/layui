@@ -67,8 +67,9 @@
 					   {name:"test2", open:true, children:[
 					      {name:"test2_1"}, {name:"test2_2"}]}
 					   ];
-			   
-					iztree.render('show',setting,zNodes);
+			   		
+					iztree.render({id:'show',setting:setting,zNodes:zNodes,
+						btns:[{icon:"iconfont iconcheckbox-multiple-ma",id:"123",text:"全选"}]});
 				})
 			});
 		</script>
