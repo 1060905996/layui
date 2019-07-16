@@ -1,3 +1,10 @@
+/**
+ * id: input id' ,
+ * setting:ztree 配置 setting
+ * zNodes:ztree 节点 zNodes
+ * 
+ * */
+
 layui.config({
   base: '../../' //配置 layui 第三方扩展组件存放的基础目录
 }).extend({
@@ -5,28 +12,31 @@ layui.config({
 }).define(['ztree','jquery'],function(exports){
 	let ztree = layui.ztree,$ = layui.jquery;
 	let map = {},
-	itreeInput="_itree_input",
-	itreeDiv = "_itree_div",
-	itreeContentDiv="_itree_content_div",
-	ztreeId="_itree";
-	let _config = {
-		id :"id",
-		setting:"ztree配置",
-		zNodes:"ztree 节点",
-		btns:"显示在头部的按钮,可以做功能扩展[{id,icon,text,title}]",
-	}
+	p1="_itree_input",
+	p2 = "_itree_div",
+	p3="_itree";
+	
 	let mod = {
 		render:function(config){
-			   let iztree = new iZtree(config);
+			   let itree = new iTree(config);
+			   this.itree = itree;
+			   map[config.id] = itree;
+			   return mod;
 		},
+		showTree(){
+			this.itree.showMenu();
+		},
+		hideTree(){
+			this.itree.hideMenu();
+		}
 	}
-	class iZtree{
+	class iTree{
 		constructor(config){
 			let that = this,c = new Class(config);
 			that.elements = c.elements;
 			//初始化事件
 			that.init_events();
-			that.zTreeObj = ztree.render(that.elements[ztreeId], config.setting, config.zNodes);	
+			that.zTreeObj = ztree.render(that.elements[p3], config.setting, config.zNodes);	
 		}
 		init_events(){
 			let that = this;
@@ -35,14 +45,14 @@ layui.config({
 				that.reSize();
 			});
 			// input
-			let ii = document.getElementById(that.elements[itreeInput]);
+			let ii = document.getElementById(that.elements[p1]);
 			$(ii).on("click",{that:that},function(){
 				that.menuClick()
 			});
 		}
 		menuClick(){
 			let that = this;
-			var display = document.getElementById(that.elements[itreeDiv]).style.display;
+			var display = document.getElementById(that.elements[p2]).style.display;
 			if(display == "none" || display == "") {
 				that.showMenu();
 			} else {
@@ -51,27 +61,25 @@ layui.config({
 		}
 		showMenu(){
 			let that = this;
-			$("#"+that.elements[itreeDiv]).slideDown("fast");
+			$("#"+that.elements[p2]).slideDown("fast");
 			$("body").bind("mousedown",{that:that},function(event,type){
-				console.log("mousedown");
 				that.onBodyDown(event,that);
 			});
 		}
 		hideMenu(){
 			let that = this;
-			$("#"+that.elements[itreeDiv]).fadeOut("fast");
+			$("#"+that.elements[p2]).fadeOut("fast");
 			$("body").unbind("mousedown", {that:that},function(event,type){
-				console.log("mousedown");
 				that.onBodyDown(event,that);
 			});
 		}
 		reSize(){
 			let that = this;
-			let width = document.getElementById(that.elements[itreeInput]).offsetWidth-3;
-			$("#"+that.elements[itreeDiv]).css({width: width});
+			let width = document.getElementById(that.elements[p1]).offsetWidth-3;
+			$("#"+that.elements[p2]).css({width: width});
 		}
 		onBodyDown(event,that){
-			let t = document.getElementById(that.elements[itreeDiv]);
+			let t = document.getElementById(that.elements[p2]);
 			console.log()
 			if(!t.contains(event.target)) {
 				that.hideMenu();
@@ -92,48 +100,62 @@ layui.config({
 			}
 			that.elements={};
 			that.elements["id"] = id;
-			that.elements[itreeInput] = id+itreeInput;
-			that.elements[itreeDiv] = id+itreeDiv;
-			that.elements[itreeContentDiv] = id+itreeContentDiv;
-			that.elements[ztreeId] = id+ztreeId;
+			that.elements[p1] = id+p1;
+			that.elements[p2] = id+p2;
+			that.elements[p3] = id+p3;
 			let html = this.build_html(that.elements,config);
 			ele.parentElement.innerHTML = html;
 		}
 		build_html(elements,config){
-			let btnHtml=this.build_btns(config.btns);
-			let html = `<input id="${elements[itreeInput]}"  class="layui-input" placeholder="-" type="text" readonly/>
-				<div id="${elements[itreeDiv]}" class="itreeContent">
-					<div class="itree" id="${elements[itreeContentDiv]}">
+			let btnHtml=this.build_header(config);
+			let html = `<input id="${elements[p1]}"  class="layui-input" placeholder="-" type="text" readonly/>
+				<div id="${elements[p2]}" class="itreeContent">
+					<div class="itree">
 						${btnHtml}
-						<ul id="${elements[ztreeId]}" class="ztree">
+						<ul id="${elements[p3]}" class="ztree">
 						</ul>
 					</div>
 				</div>`;
 		 	return html;
 		}
 		
-		build_btns(btns){
-			if(btns==undefined || btns.length==0)return "";
-			let t = [];
-			for(let btn of btns){
-				t.push(`<i class="${btn.icon}" id="${btn.id}" title='${btn.title}'>
-								<span>${btn.text}</span>
-						</i>`);
-			}
-			return t.join('');
+		build_header(config){
+			let html = config.headHtml;
+			if(html==undefined) return "";
+			return html;
 		}
-		/*<i class="iconfont iconcheckbox-multiple-ma" id="${_checkAllbtn}">
-							<span id="${_checkAllbtn}">全选</span>
-						</i>
-							<i class="iconfont iconcheckbox-multiple-bl" id="${_unckeckAllbtn}">
-							<span id="${_unckeckAllbtn}">全不选</span>
-						</i>
-							<i class="layui-icon layui-icon-add-circle" id="${_addbtn}">
-							<span id="${_addbtn}">添加</span>
-						</i>
-							<i class="iconfont iconshouqi-copy" style="float: right;margin-right: 3px;" id="treeDemo_top">
-							<span id="treeDemo_top_span"></span>
-						</i>*/
 	}
+	
+	function onload(){
+		let s = document.createElement('style');
+		s.innerHTML=`
+			.itreeContent {
+				display: none;
+				position: absolute;
+				width: 100%;
+			}
+			
+			.itree {
+				margin-top: 0;
+				width: 100%;
+				position: absolute;
+				z-index: 100;
+				background-color: white;
+				border: 1px solid #D8E2E9;
+			}
+			
+			.itree>i {
+				font-size: 20px;
+				color: #c2c2c2;
+				margin-left: 5px;
+			}
+			
+			.itree>i>span {
+				font-size: 15px;
+				margin-left: 3px;
+			}`;
+		document.body.appendChild(s)
+	}
+	onload();
 	exports('itree', mod);
 });

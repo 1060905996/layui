@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>iztree插件</title>
+		<title>bmstree插件</title>
 		<link rel="stylesheet" type="text/css" href="../../../layui/css/layui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../lib/iconfont/iconfont.css" />
 	</head>
@@ -22,22 +22,12 @@
 			layui.config({
 			  base: '../../../layui_exts/' //配置 layui 第三方扩展组件存放的基础目录
 			}).extend({
-			  itree: 'itree/itree' 
-			}).use(['itree', 'jquery'], function() {
-				let itree = layui.itree,
+			  bmstree: 'bmstree/bmstree' 
+			}).use(['bmstree', 'jquery'], function() {
+				let bmstree = layui.bmstree,
 					$ = layui.jquery;
 				$(function() {
-					var setting = {};
-					var zNodes = [
-					   {name:"test1", open:true, children:[
-					      {name:"test1_1"}, {name:"test1_2"}]},
-					   {name:"test2", open:true, children:[
-					      {name:"test2_1"}, {name:"test2_2"}]}
-					   ];
-			   		
-					let mytree = itree.render({id:'show',setting:setting,zNodes:zNodes,
-						headHtml:'<i class="iconfont iconcheckbox-multiple-ma"><span >全选</span></i><i class="iconfont iconcheckbox-multiple-bl"><span>全不选</span></i>'});
-					mytree.showTree();
+					bmstree.render({id:"show",leaf:true});
 				})
 			});
 		</script>
