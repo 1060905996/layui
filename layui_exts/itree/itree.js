@@ -28,6 +28,17 @@ layui.config({
 		},
 		hideTree(){
 			this.itree.hideMenu();
+		},
+		setValue(ids,names){
+			let elements = this.itree.elements;
+			document.getElementById(elements["id"]).value = ids;
+			document.getElementById(elements["_itree_input"]).value = names;
+		},
+		getValue(){
+			return document.getElementById(this.itree.elements["id"]).value;
+		},
+		getNames(){
+			return document.getElementById(this.itree.elements["_itree_input"]).value;
 		}
 	}
 	class iTree{
@@ -98,13 +109,17 @@ layui.config({
 			if(ele==null){
 				console.error("不存在元素id="+id);
 			}
+			ele.style.display = "none";
 			that.elements={};
 			that.elements["id"] = id;
 			that.elements[p1] = id+p1;
 			that.elements[p2] = id+p2;
 			that.elements[p3] = id+p3;
 			let html = this.build_html(that.elements,config);
-			ele.parentElement.innerHTML = html;
+			
+			let span = document.createElement("span");
+			span.innerHTML = html;
+			ele.parentElement.append(span);
 		}
 		build_html(elements,config){
 			let btnHtml=this.build_header(config);

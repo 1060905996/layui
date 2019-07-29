@@ -12,33 +12,68 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">label</label>
 			<div class="layui-input-block">
-				<input id="show"  class="layui-input" placeholder="-" type="text" readonly/>
+				<input id="show" class="layui-input" placeholder="-" type="text" readonly/>
+			</div>
+		</div>
+		<div class="layui-form-item" style="margin-top: 200px;">
+			<div class="layui-input-block">
+				<button type="button" class="layui-btn" onclick="setValue()">setValue</button>
+				<button type="button" class="layui-btn layui-btn-warm" onclick="getValue()">getValue</button>
+				<button type="button" class="layui-btn layui-btn-danger" onclick="getNames()">getNames</button>
 			</div>
 
 		</div>
-
 		<script src="../../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 		<script>
 			layui.config({
-			  base: '../../../layui_exts/' //配置 layui 第三方扩展组件存放的基础目录
+				base: '../../../layui_exts/' //配置 layui 第三方扩展组件存放的基础目录
 			}).extend({
-			  itree: 'itree/itree' 
+				itree: 'itree/itree'
 			}).use(['itree', 'jquery'], function() {
 				let itree = layui.itree,
 					$ = layui.jquery;
+				let mytree;
 				$(function() {
 					var setting = {};
-					var zNodes = [
-					   {name:"test1", open:true, children:[
-					      {name:"test1_1"}, {name:"test1_2"}]},
-					   {name:"test2", open:true, children:[
-					      {name:"test2_1"}, {name:"test2_2"}]}
-					   ];
-			   		
-					let mytree = itree.render({id:'show',setting:setting,zNodes:zNodes,
-						headHtml:'<i class="iconfont iconcheckbox-multiple-ma"><span >全选</span></i><i class="iconfont iconcheckbox-multiple-bl"><span>全不选</span></i>'});
-					mytree.showTree();
+					var zNodes = [{
+							name: "test1",
+							open: true,
+							children: [{
+								name: "test1_1"
+							}, {
+								name: "test1_2"
+							}]
+						},
+						{
+							name: "test2",
+							open: true,
+							children: [{
+								name: "test2_1"
+							}, {
+								name: "test2_2"
+							}]
+						}
+					];
+
+					mytree = itree.render({
+						id: 'show',
+						setting: setting,
+						zNodes: zNodes,
+						headHtml: '<i class="iconfont iconcheckbox-multiple-ma"><span >全选</span></i><i class="iconfont iconcheckbox-multiple-bl"><span>全不选</span></i>'
+					});
+
 				})
+
+				window.setValue = function() {
+					mytree.setValue("1,2,3,4","节点 1,节点 2,节点 3,节点4");
+				}
+				
+				window.getValue =function(){
+					alert(mytree.getValue());
+				}
+				window.getNames = function(){
+					alert(mytree.getNames());
+				}
 			});
 		</script>
 
