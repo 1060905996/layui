@@ -29,10 +29,36 @@ layui.config({
 		hideTree(){
 			this.itree.hideMenu();
 		},
-		setValue(ids,names){
+		/**
+		 * {ids:数据,key:ids对应的属性默认值id,text:显示内容对应的属性默认值name}
+		 * 如果参数为string或array类型,key和text使用默认值 
+		 * */
+		setValue(config){
+			let ids,texts=[],key="id",text="name";
+			let zTreeObj= this.itree.zTreeObj;
+			let nodeArray = zTreeObj.transformToArray(zTreeObj.getNodes());
+			if(typeof(config)=="string"||typeof(config)=="number"){
+				ids = [config+""];
+			}else if(config instanceof Array){
+				ids= config;
+			}else{
+				let id = config["ids"];
+				if(typeof(id)=="string"||typeof(id)=="number"){
+					ids = [id+""];
+				}else{
+					ids = id;
+				}
+				key = config["key"];
+				text = config["text"]
+			}
+			for(node of nodeArray){
+				if(ids.indexOf(node[key]+"") >-1){
+					texts.push(node[text]);
+				}
+			}
 			let elements = this.itree.elements;
-			document.getElementById(elements["id"]).value = ids;
-			document.getElementById(elements["_itree_input"]).value = names;
+			document.getElementById(elements["id"]).value = ids.join(",");
+			document.getElementById(elements["_itree_input"]).value = texts.join(',');
 		},
 		getValue(){
 			return document.getElementById(this.itree.elements["id"]).value;

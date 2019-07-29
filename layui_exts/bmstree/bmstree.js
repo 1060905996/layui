@@ -22,10 +22,10 @@ layui.config({
 	let mod = {
 		render:function(config){
 			var zNodes = [
-					   {name:"test1", open:true, children:[
-					      {name:"test1_1"}, {name:"test1_2"}]},
-					   {name:"test2", open:true, children:[
-					      {name:"test2_1"}, {name:"test2_2"}]}
+					   {name:"test1", id:1, open:true, children:[
+					      {name:"test1_1",id:2}, {name:"test1_2",id:3}]},
+					   {name:"test2",id:4, open:true, children:[
+					      {name:"test2_1",id:5}, {name:"test2_2",id:6}]}
 					   ];
 			let c = new Class(config);
 			itree.render({id:config.id,setting:c.setting,zNodes:zNodes});

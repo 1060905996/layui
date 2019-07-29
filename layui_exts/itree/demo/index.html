@@ -18,6 +18,8 @@
 		<div class="layui-form-item" style="margin-top: 200px;">
 			<div class="layui-input-block">
 				<button type="button" class="layui-btn" onclick="setValue()">setValue</button>
+				<button type="button" class="layui-btn" onclick="setValue2()">setValue2</button>
+				<button type="button" class="layui-btn" onclick="setValue3()">setValue3</button>
 				<button type="button" class="layui-btn layui-btn-warm" onclick="getValue()">getValue</button>
 				<button type="button" class="layui-btn layui-btn-danger" onclick="getNames()">getNames</button>
 			</div>
@@ -35,25 +37,12 @@
 				let mytree;
 				$(function() {
 					var setting = {};
-					var zNodes = [{
-							name: "test1",
-							open: true,
-							children: [{
-								name: "test1_1"
-							}, {
-								name: "test1_2"
-							}]
-						},
-						{
-							name: "test2",
-							open: true,
-							children: [{
-								name: "test2_1"
-							}, {
-								name: "test2_2"
-							}]
-						}
-					];
+					var zNodes = [
+					   {name:"test1", id:1, open:true, children:[
+					      {name:"test1_1",id:2}, {name:"test1_2",id:3}]},
+					   {name:"test2",id:4, open:true, children:[
+					      {name:"test2_1",id:5}, {name:"test2_2",id:6}]}
+					   ];
 
 					mytree = itree.render({
 						id: 'show',
@@ -65,7 +54,15 @@
 				})
 
 				window.setValue = function() {
-					mytree.setValue("1,2,3,4","节点 1,节点 2,节点 3,节点4");
+					mytree.setValue("1");
+				}
+				
+				window.setValue2 = function() {
+					mytree.setValue(["1","2","3"]);
+				}
+				
+				window.setValue3 = function() {
+					mytree.setValue({ids:["1","2","3","4"],key:"id",text:"name"});
 				}
 				
 				window.getValue =function(){
