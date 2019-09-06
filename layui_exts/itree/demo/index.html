@@ -12,7 +12,7 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">label</label>
 			<div class="layui-input-block">
-				<input id="show" class="layui-input" placeholder="-" type="text" readonly/>
+				<input id="show" name="show" class="layui-input" placeholder="-" type="text" readonly/>
 			</div>
 		</div>
 		<div class="layui-form-item" style="margin-top: 200px;">
@@ -38,7 +38,7 @@
 				$(function() {
 					var setting = {};
 					var zNodes = [
-					   {name:"test1", id:1, open:true, children:[
+					   {name:"test1", ID:1, open:true, children:[
 					      {name:"test1_1",id:2}, {name:"test1_2",id:3}]},
 					   {name:"test2",id:4, open:true, children:[
 					      {name:"test2_1",id:5}, {name:"test2_2",id:6}]}
@@ -62,7 +62,7 @@
 				}
 				
 				window.setValue3 = function() {
-					mytree.setValue({ids:["1","2","3","4"],key:"id",text:"name"});
+					mytree.setValue({ids:["1","2","3","4"],key:"id",text:"text"});
 				}
 				
 				window.getValue =function(){
